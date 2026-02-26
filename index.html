@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Will You Be My Girlfriend?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playpen+Sans+Thai:wght@100..800&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* รองรับมือถือที่มีแถบเมนูด้านล่าง */
+            min-height: 100dvh;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-color: #ffdde1;
+            font-family: 'Playpen Sans Thai', sans-serif;
+            overflow: hidden;
+            position: relative;
+            touch-action: manipulation;
+            /* ป้องกันการซูมผิดจังหวะ */
+        }
+
+        /* พื้นหลังหัวใจลอย */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 100, 150, 0.4);
+            animation: floatUp 10s linear infinite;
+            bottom: -50px;
+            font-size: 20px;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            border: 2px solid #ffb7b2;
+            box-sizing: border-box;
+            /* รองรับจอที่มีติ่ง */
+            padding-top: max(30px, env(safe-area-inset-top));
+            padding-bottom: max(30px, env(safe-area-inset-bottom));
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-family: 'Playpen Sans Thai', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .gif-container img {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-height: 60px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Playpen Sans Thai', sans-serif;
+            font-weight: bold;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #yesBtn {
+            background-color: #ff6b6b;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            z-index: 20;
+        }
+
+        #yesBtn:active {
+            transform: scale(0.95);
+        }
+
+        #noBtn {
+            background-color: #e0e0e0;
+            color: #555;
+            /* เริ่มต้นเป็น relative ก่อน พอเริ่มขยับค่อยเปลี่ยนเป็น fixed */
+            position: relative;
+            z-index: 20;
+        }
+
+        .hidden-message {
+            display: none;
+        }
+
+        .success-gif {
+            width: 100%;
+            max-width: 200px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* --- Responsive สำหรับจอมือถือเล็ก --- */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .container {
+                width: 85%;
+                padding: 20px 15px;
+            }
+
+            button {
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- เพลงพื้นหลัง (ลิงก์ตัวอย่าง) -->
+    <audio id="bgMusic" loop>
+        <source src="https://soft-amber-hkbaywopz9.edgeone.app/m_fixed_B8dGM8h.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <!-- ส่วนคำถาม -->
+        <div id="questionArea">
+            <div class="gif-container">
+                <!-- รูป GIF หมีน้อยน่ารัก -->
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3R6bW84b3N4b3N4b3N4b3N4b3N4b3N4b3N4b3N4b3N4bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif"
+                    alt="Cute Bear">
+            </div>
+            <h1>เป็นแฟนไหม? 🥺</h1>
+            <p>กะหรี่ปั๊บบบบบบบบ</p>
+
+            <div class="buttons">
+                <button id="yesBtn" onclick="sheSaidYes()">ได้เลยยย! ❤️</button>
+                <!-- เพิ่ม ontouchstart สำหรับมือถือ -->
+                <button id="noBtn" ontouchstart="moveButton(event)" onmouseover="moveButton()"
+                    onclick="moveButton()">ไม่อะ</button>
+            </div>
+        </div>
+
+        <!-- ส่วนตอนตกลง -->
+        <div id="successArea" class="hidden-message">
+            <div class="gif-container">
+                <!-- รูป GIF ดีใจ -->
+                <img src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif" alt="Happy Bear"
+                    class="success-gif">
+            </div>
+            <h1>เย้!! ดีใจที่สุดเลยยย อิอิ 🎉</h1>
+            <p>สัญญาว่าจะรักและดูแลเธอให้ดีที่สุดดดดด ❤️</p>
+            <p style="font-size: 0.9rem; color: #888; margin-top: 20px;">(รีโหลดหน้าเพื่อเริ่มใหม่)</p>
+        </div>
+    </div>
+
+    <!-- Script สำหรับลูกเล่น -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // 1. สร้างหัวใจลอยพื้นหลัง
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 7 + 's';
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+        setInterval(createHearts, 300);
+
+        // 2. ฟังก์ชันปุ่ม "ไม่" วิ่งหนี (ปรับปรุงให้รองรับมือถือ)
+        const noBtn = document.getElementById('noBtn');
+
+        function moveButton(e) {
+            // ป้องกันการกดปุ่มจริงบนมือถือ (ป้องกัน event click ติด)
+            if (e) {
+                e.preventDefault();
+            }
+
+            // คำนวณพื้นที่หน้าจอที่ใช้งานได้
+            const maxWidth = window.innerWidth - noBtn.offsetWidth - 20; // เว้นขอบ 20px
+            const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
+
+            const randomX = Math.floor(Math.random() * maxWidth);
+            const randomY = Math.floor(Math.random() * maxHeight);
+
+            // เปลี่ยนเป็น fixed เพื่อให้วิ่งทั่วจอได้ไม่ติดกรอบ
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+
+            // สุ่มสีปุ่มนิดหน่อยให้ดูสนุก
+            const colors = ['#e0e0e0', '#ffcdd2', '#f8bbd0', '#f48fb1'];
+            noBtn.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // 3. ฟังก์ชันเมื่อกด "ใช่"
+        function sheSaidYes() {
+            // เล่นเพลง
+            const audio = document.getElementById('bgMusic');
+            audio.volume = 0.5;
+            // บางเบราว์เซอร์ต้องให้ user interact ก่อนถึงจะเล่นเสียงได้ (ซึ่งกดปุ่มถือว่า interact แล้ว)
+            audio.play().catch(error => {
+                console.log("Audio autoplay blocked:", error);
+            });
+
+            // ซ่อนคำถาม แสดงความสำเร็จ
+            document.getElementById('questionArea').style.display = 'none';
+            document.getElementById('successArea').style.display = 'block';
+
+            // ยิงพลุกระดาษ
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+
+</html>
